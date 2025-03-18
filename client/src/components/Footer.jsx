@@ -32,15 +32,15 @@ const Footer = () => {
           <h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
           <div className="flex items-center text-gray-400 text-lg mb-4">
             <FaMapMarkerAlt className="mr-2 text-2xl" />
-            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">123 Street Name, City Name, Country</a>
+            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">Murang'a University, Murang'a, Kenya</a>
           </div>
           <div className="flex items-center text-gray-400 text-lg mb-4">
             <FaEnvelope className="mr-2 text-2xl" />
-            <a href="mailto:abc@gmail.com" className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">abc@gmail.com</a>
+            <a href="mailto:groupA@mut.co.ke" className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">groupA@mut.co.ke</a>
           </div>
           <div className="flex items-center text-gray-400 text-lg">
             <FaPhone className="mr-2" />
-            <a href="tel:+1234567890" className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">+123 456 7890</a>
+            <a href="tel:+254700164733" className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">+254 700 164 733</a>
           </div>
         </div>
 

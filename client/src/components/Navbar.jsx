@@ -53,7 +53,7 @@ const Navbar = () => {
                 FAQ
               </NavLink>
               <a
-                href="https://github.com/Cleve-codes/AI_diabetes_Prediction_website"
+                href="https://github.com/Cleve-codes/AI_diabetes_prediction_website"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium"
