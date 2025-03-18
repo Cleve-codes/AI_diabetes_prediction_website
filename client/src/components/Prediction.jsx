@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
 const Prediction = () => {
   const [userInput, setUserInput] = useState({
     Age: "",
@@ -23,7 +21,7 @@ const Prediction = () => {
     setButtonDisabled(true);
     try {
       const response = await axios.post(
-        `${API_URL}/predict`,
+        "https://diabetes-prediction-1-6a5i.onrender.com/predict",
         userInput
       );
       setPrediction(response.data);
