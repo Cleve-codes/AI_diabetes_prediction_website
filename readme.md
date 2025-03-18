@@ -1,12 +1,10 @@
 # Diabetes Prediction Platform 🏥
 
-[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fdiabetes-prediction-gamma.vercel.app%2F)](https://diabetes-prediction-gamma.vercel.app/)
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
-[![GSSoC 24](https://img.shields.io/badge/GSSoC-24-blue)](https://gssoc.girlscript.tech/)
+[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fdiabetes-prediction-seven.vercel.app%2F)](https://diabetes-prediction-seven.vercel.app/)
 
 > An intelligent web platform that leverages machine learning to predict diabetes risk and provide actionable health insights.
 
-[Live Demo](https://diabetes-prediction-gamma.vercel.app/) | [Report Bug](https://github.com/Cleve-codes/AI_Diabetes-Prediction_website/issues) | [Request Feature](https://github.com/AI_Diabetes_prediction_website/Diabetes_Prediction/issues)
+[Live Demo](https://diabetes-prediction-seven.vercel.app/) | [Report Bug](https://github.com/Cleve-codes/AI_diabetes_prediction_website/issues) | [Request Feature](https://github.com/AI_diabetes_prediction_website/Diabetes_Prediction/issues)
 
 ![Diabetes Prediction Website](https://github.com/user-attachments/assets/b2e5bbb6-8f9b-4dba-9a23-9ca77a3553ba)
 
@@ -52,7 +50,7 @@ The Diabetes Prediction Platform is a comprehensive web application that helps u
 
 1. Clone the repository
 ```bash
-git clone https://github.com/Cleve-codes/AI_Diabetes_Prediction_website.git
+git clone https://github.com/Cleve-codes/AI_diabetes_prediction_website.git
 cd Diabetes-Prediction
 ```
 
