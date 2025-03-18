@@ -19,4 +19,4 @@ _Enter the issue number of the bug(s) that this PR fixes_
 
 ## Prerequisites
 
-- [ ] Have you followed all the [CONTRIBUTING GUIDELINES](https://github.com/BamaCharanChhandogi/Diabetes-Prediction/blob/main/CONTRIBUTION.md)?
+- [ ] Have you followed all the [CONTRIBUTING GUIDELINES](https://github.com/Cleve-codes/AI_diabetes_prediction_website/blob/main/CONTRIBUTION.md)?

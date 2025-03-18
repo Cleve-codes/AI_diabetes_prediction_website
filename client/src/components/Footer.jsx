@@ -72,7 +72,7 @@ const Footer = () => {
         </div>
         <div>
           <a
-            href="https://www.github.com/BamaCharanChhandogi"
+            href="https://www.github.com/Cleve-codes"
             className="text-gray-400 hover:text-white transition-colors duration-300 text-center md:text-right"
           >
             <p>Developed by Cleve Momanyi</p>
