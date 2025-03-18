@@ -6,7 +6,7 @@
 
 [Live Demo](https://diabetes-prediction-seven.vercel.app/) | [Report Bug](https://github.com/Cleve-codes/AI_diabetes_prediction_website/issues) | [Request Feature](https://github.com/AI_diabetes_prediction_website/Diabetes_Prediction/issues)
 
-![Diabetes Prediction Website](https://github.com/user-attachments/assets/b2e5bbb6-8f9b-4dba-9a23-9ca77a3553ba)
+<!-- ![Diabetes Prediction Website](https://github.com/user-attachments/assets/b2e5bbb6-8f9b-4dba-9a23-9ca77a3553ba) -->
 
 ## 🌟 Overview
 
