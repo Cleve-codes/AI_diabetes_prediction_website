@@ -5,7 +5,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+# Update CORS to allow both Render and Vercel frontends
+CORS(app, resources={r"/*": {"origins": [
+    "https://diabetes-prediction-jhs2k119r-clevecodes-projects.vercel.app",
+    "https://diabetes-prediction-1-6a5i.onrender.com",
+    "http://localhost:5173"  # For local development
+]}})
+
+# Configure for production
+app.config['ENV'] = 'production'
+app.config['DEBUG'] = False
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 scaler_path = os.path.join(script_dir, 'scaler.pkl')
@@ -52,4 +61,5 @@ def predictions():
     return "Invalid request method"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0', port=port)
