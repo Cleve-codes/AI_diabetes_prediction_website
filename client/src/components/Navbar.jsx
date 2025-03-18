@@ -52,7 +52,7 @@ const Navbar = () => {
               <NavLink to="/FAQ" onClick={closeMenu}>
                 FAQ
               </NavLink>
-              {/* <a
+              <a
                 href="https://github.com/Cleve-codes/AI_diabetes_prediction_website"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -61,7 +61,7 @@ const Navbar = () => {
               >
                 <CiStar className="w-7 h-7 text-yellow-500 font-bold mr-2" />
                 <FaGithub className="h-7 w-7" />
-              </a> */}
+              </a>
             </div>
           </div>
           <div className="-mr-2 flex 850px:hidden">
