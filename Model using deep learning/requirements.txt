@@ -23,3 +23,11 @@ gunicorn
 seaborn
 scikit-learn
 matplotlib
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+tensorflow
+# pickle5
+scipy

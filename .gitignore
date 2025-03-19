@@ -1,2 +1,5 @@
 /server/venv/
 /client/node_modules/
+.vercel/
+/Model using deep learning/venv
+/Model using deep learning/deeplearning.pkl
