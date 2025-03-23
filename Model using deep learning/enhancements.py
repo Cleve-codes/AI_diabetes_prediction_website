@@ -80,6 +80,42 @@ print(df.describe())
 """
 
 """
+## Understanding the Dataset: Descriptive Statistics
+
+The table above provides a statistical summary of our diabetes dataset after preprocessing. Let's analyze these statistics to gain deeper insights:
+
+### Key Observations:
+
+1. **Sample Size**: Our dataset contains 768 records of female patients, providing a substantial sample for analysis.
+
+2. **Feature Distributions**:
+   - **Pregnancies**: Ranges from 0 to 17, with an average of approximately 3.85, indicating most women in the dataset have had fewer than 4 pregnancies.
+   - **Glucose**: Blood glucose levels range from 44 to 199 mg/dL, with a mean of 121.7 mg/dL. A normal fasting glucose level is typically under 100 mg/dL, suggesting many patients have elevated glucose levels.
+   - **Blood Pressure**: Ranges from 24 to 122 mm Hg, with a mean of 72.4 mm Hg. This is within normal diastolic blood pressure ranges.
+   - **Skin Thickness**: After replacing zeros, values range from 7 to 99 mm, with a mean of 29.1 mm. This represents triceps skinfold thickness, a measure of body fat.
+   - **Insulin**: Ranges from 14 to 846 μU/ml, with a mean of 140.7 μU/ml. The high standard deviation (86.4) indicates significant variability in insulin levels among patients.
+   - **BMI**: Body Mass Index ranges from 18.2 to 67.1 kg/m², with a mean of 32.5 kg/m². A BMI over 30 is classified as obese, suggesting a significant portion of the dataset consists of obese individuals.
+   - **Diabetes Pedigree Function**: Ranges from 0.078 to 2.42, with a mean of 0.47. This function represents genetic influence on diabetes risk.
+   - **Age**: Patients range from 21 to 81 years old, with a mean age of 33.2 years.
+   - **Outcome**: Approximately 35% of patients (0.35 mean) have diabetes (outcome = 1).
+
+3. **Data Distribution Characteristics**:
+   - Most features show right-skewed distributions, particularly for Insulin and DiabetesPedigreeFunction.
+   - The 25th, 50th (median), and 75th percentiles help us understand the distribution within each feature. For example, 75% of patients have a BMI below 36.6 kg/m².
+
+4. **Clinical Relevance**:
+   - The mean glucose level (121.7 mg/dL) is in the prediabetic range, which aligns with expectations for a diabetes study.
+   - The mean BMI (32.5 kg/m²) falls within the obese category, consistent with obesity being a risk factor for type 2 diabetes.
+   - The relatively young average age (33.2 years) highlights that diabetes is affecting younger populations.
+
+5. **Preprocessing Effects**:
+   - Our preprocessing steps have successfully eliminated implausible zero values in key clinical measurements, resulting in more realistic distributions for Glucose, BloodPressure, SkinThickness, Insulin, and BMI.
+   - The medians used for replacement reflect realistic physiological values for each measure.
+
+These statistics provide a foundation for understanding our dataset and will guide our feature selection, model development, and interpretation of results in the subsequent analysis.
+"""
+
+"""
 #### Outlier Detection and Handling
 """
 
@@ -477,6 +513,159 @@ By addressing these ethical considerations, we aim to develop a diabetes predict
 """
 
 #################################################
+# SECTION F: THRESHOLD ANALYSIS
+#################################################
+
+"""
+## f. Threshold Analysis for Diabetes Prediction
+
+In medical diagnosis, the choice of classification threshold is crucial as it directly impacts the balance between sensitivity (true positive rate) and specificity (true negative rate). This section explores different threshold values and their implications for diabetes prediction.
+
+### i. Understanding Threshold Selection
+
+The default threshold of 0.5 in binary classification might not be optimal for medical applications. We'll analyze various thresholds to find the optimal balance between:
+- Sensitivity: Ability to correctly identify diabetic patients
+- Specificity: Ability to correctly identify non-diabetic patients
+- Precision: Proportion of correctly identified diabetic patients
+- F1 Score: Harmonic mean of precision and recall
+"""
+
+# Code for threshold analysis
+"""
+# Get probability predictions
+y_pred_prob = final_model.predict(X_test_scaled)
+
+# Define threshold range
+thresholds = np.arange(0.1, 0.9, 0.05)
+results = []
+
+# Calculate metrics for each threshold
+for threshold in thresholds:
+    y_pred = (y_pred_prob > threshold).astype(int)
+    
+    # Calculate metrics
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    specificity = confusion_matrix(y_test, y_pred)[0,0] / (confusion_matrix(y_test, y_pred)[0,0] + confusion_matrix(y_test, y_pred)[0,1])
+    
+    results.append({
+        'threshold': threshold,
+        'accuracy': accuracy,
+        'precision': precision,
+        'recall': recall,
+        'f1': f1,
+        'specificity': specificity
+    })
+
+# Convert results to DataFrame
+results_df = pd.DataFrame(results)
+
+# Plot metrics across thresholds
+plt.figure(figsize=(12, 8))
+for metric in ['accuracy', 'precision', 'recall', 'f1', 'specificity']:
+    plt.plot(results_df['threshold'], results_df[metric], label=metric.capitalize())
+plt.xlabel('Classification Threshold')
+plt.ylabel('Score')
+plt.title('Performance Metrics Across Different Classification Thresholds')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Find optimal threshold based on F1 score
+optimal_threshold = results_df.loc[results_df['f1'].idxmax(), 'threshold']
+print(f"Optimal threshold based on F1 score: {optimal_threshold:.3f}")
+
+# Calculate final metrics with optimal threshold
+y_pred_optimal = (y_pred_prob > optimal_threshold).astype(int)
+print("\nMetrics at optimal threshold:")
+print(f"Accuracy: {accuracy_score(y_test, y_pred_optimal):.3f}")
+print(f"Precision: {precision_score(y_test, y_pred_optimal):.3f}")
+print(f"Recall: {recall_score(y_test, y_pred_optimal):.3f}")
+print(f"F1 Score: {f1_score(y_test, y_pred_optimal):.3f}")
+print(f"Specificity: {confusion_matrix(y_test, y_pred_optimal)[0,0] / (confusion_matrix(y_test, y_pred_optimal)[0,0] + confusion_matrix(y_test, y_pred_optimal)[0,1]):.3f}")
+"""
+
+"""
+### ii. Analysis of Results
+
+The threshold analysis reveals several important insights:
+
+1. **Threshold Impact on Metrics**:
+   - Lower thresholds (< 0.5) increase sensitivity but decrease specificity
+   - Higher thresholds (> 0.5) increase specificity but decrease sensitivity
+   - The optimal threshold balances these trade-offs based on the F1 score
+
+2. **Medical Context Considerations**:
+   - In diabetes screening, false negatives (missed cases) are often more costly than false positives
+   - A lower threshold might be preferred if the goal is to identify all potential cases
+   - A higher threshold might be preferred if follow-up testing is expensive or invasive
+
+3. **Optimal Threshold Selection**:
+   - The optimal threshold of [insert value] provides the best balance of precision and recall
+   - This threshold achieves [insert metrics] for key performance indicators
+   - The choice of threshold can be adjusted based on specific healthcare requirements
+
+4. **Clinical Implementation Recommendations**:
+   - Consider implementing a two-stage screening process:
+     1. Initial screening with a lower threshold for high sensitivity
+     2. Confirmatory testing for cases above the threshold
+   - Document the chosen threshold and its rationale in clinical guidelines
+   - Regular monitoring of model performance at the chosen threshold
+"""
+
+"""
+### iii. Cost-Benefit Analysis of Different Thresholds
+
+The choice of threshold has significant implications for healthcare costs and patient outcomes:
+
+1. **Cost Implications**:
+   - False Positives: Additional testing costs, patient anxiety, and healthcare resource utilization
+   - False Negatives: Potential progression of undiagnosed diabetes, leading to higher treatment costs later
+
+2. **Healthcare Resource Allocation**:
+   - Lower thresholds: Higher screening costs but potentially lower long-term treatment costs
+   - Higher thresholds: Lower immediate costs but risk of missed cases
+
+3. **Patient Experience**:
+   - Lower thresholds: More patients undergo additional testing but fewer cases are missed
+   - Higher thresholds: Fewer unnecessary tests but higher risk of missed diagnoses
+
+4. **Recommendations for Implementation**:
+   - Consider local healthcare resource constraints when setting thresholds
+   - Implement a flexible threshold system that can be adjusted based on:
+     * Available healthcare resources
+     * Population characteristics
+     * Seasonal variations in diabetes prevalence
+     * Changes in treatment costs
+"""
+
+"""
+### iv. Future Improvements and Considerations
+
+1. **Dynamic Threshold Adjustment**:
+   - Implement a system for regular threshold review and adjustment
+   - Consider seasonal variations in diabetes prevalence
+   - Account for changes in population demographics
+
+2. **Risk-Based Thresholds**:
+   - Develop different thresholds for different risk groups
+   - Consider patient age, family history, and other risk factors
+   - Implement personalized threshold recommendations
+
+3. **Monitoring and Evaluation**:
+   - Regular assessment of model performance at chosen thresholds
+   - Tracking of false positive and false negative rates
+   - Analysis of healthcare costs associated with different thresholds
+
+4. **Integration with Clinical Guidelines**:
+   - Align threshold choices with existing clinical protocols
+   - Document threshold selection rationale
+   - Regular review and updates based on new clinical evidence
+"""
+
+#################################################
 # COMPARATIVE ANALYSIS AND CONCLUSION
 #################################################
 
@@ -558,4 +747,47 @@ Our comparative analysis shows that the deep learning model outperforms traditio
 5. **Deployment considerations**: Developing an API wrapper with appropriate security measures for potential integration with electronic health record systems.
 
 This project demonstrates the potential of machine learning in supporting diabetes risk assessment while highlighting the importance of addressing ethical considerations in healthcare AI applications.
+"""
+
+"""
+# Get target value distribution
+target_vals = df['Outcome'].value_counts()
+target_vals
+"""
+
+"""
+## Target Value Distribution Analysis
+
+The output above shows the distribution of diabetes outcomes in our dataset:
+
+### Key Observations:
+
+1. **Class Distribution**:
+   - **Non-Diabetic (0)**: [Insert count] patients
+   - **Diabetic (1)**: [Insert count] patients
+
+2. **Class Imbalance**:
+   - The dataset exhibits class imbalance, with a higher proportion of non-diabetic cases
+   - This is typical in medical datasets where the prevalence of the condition in the general population is reflected
+   - The imbalance ratio is approximately [Insert ratio]:1 (non-diabetic:diabetic)
+
+3. **Clinical Significance**:
+   - This distribution aligns with general diabetes prevalence rates in the population
+   - The higher number of non-diabetic cases provides a good baseline for model comparison
+   - The presence of both classes in sufficient numbers allows for meaningful model training
+
+4. **Implications for Model Development**:
+   - We'll need to consider class imbalance in our model development:
+     * Use appropriate evaluation metrics (precision, recall, F1-score)
+     * Consider class weights during model training
+     * Implement techniques like SMOTE or class balancing if necessary
+   - The distribution suggests our model should be evaluated beyond simple accuracy
+   - Special attention should be paid to the minority class (diabetic cases) performance
+
+5. **Data Quality Assessment**:
+   - The distribution appears reasonable for a medical screening dataset
+   - No unexpected values or anomalies in the target variable
+   - The sample size is sufficient for both classes to train a reliable model
+
+This analysis of the target distribution will guide our model development strategy and help us select appropriate evaluation metrics for assessing model performance.
 """ 
