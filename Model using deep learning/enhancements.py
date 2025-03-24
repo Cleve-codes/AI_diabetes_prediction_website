@@ -397,7 +397,11 @@ plt.show()
 """
 
 """
-### Implications of False Positives vs. False Negatives in Medical Context
+When evaluating our diabetes prediction model, we carefully consider these trade-offs based on the intended use of the model—whether for initial screening, risk assessment, or as part of a multi-stage diagnostic process.
+"""
+
+"""
+## Implications of False Positives vs. False Negatives in Medical Context
 
 In diabetes prediction, understanding the implications of different types of errors is crucial:
 
@@ -410,14 +414,6 @@ In diabetes prediction, understanding the implications of different types of err
 - **Medical Impact**: A non-diabetic patient incorrectly classified as diabetic will undergo unnecessary additional testing, which may cause anxiety and potentially unnecessary treatments.
 - **Cost**: These include costs of additional diagnostic tests, potential psychological impact, and unnecessary medical interventions.
 - **Our Model**: Our precision of [insert value] indicates that [insert percentage]% of patients our model identifies as diabetic actually have the condition. The false positive rate of [insert percentage]% represents healthy individuals incorrectly flagged for diabetes.
-
-#### Balancing the Trade-offs
-In diabetes screening:
-1. **Higher Sensitivity (Lower False Negatives)** is often preferred for initial screening to ensure we don't miss cases, especially because undiagnosed diabetes can lead to severe complications.
-2. **Follow-up Testing**: Patients flagged positive by the model would undergo confirmatory diagnostic tests (like HbA1c or glucose tolerance tests) before any treatment decisions.
-3. **Cost-Effective Approach**: Our model with an F1 score of [insert value] balances precision and recall, making it suitable for an initial screening tool in a multi-stage diagnosis process.
-
-This model can be deployed as part of a risk assessment system where patients identified as high-risk would be recommended for proper clinical testing rather than making definitive diagnoses, thus mitigating the impact of both types of errors.
 """
 
 #################################################
@@ -790,4 +786,123 @@ The output above shows the distribution of diabetes outcomes in our dataset:
    - The sample size is sufficient for both classes to train a reliable model
 
 This analysis of the target distribution will guide our model development strategy and help us select appropriate evaluation metrics for assessing model performance.
-""" 
+"""
+
+"""
+## Performance Metrics
+
+The following metrics were calculated to evaluate the model's performance:
+
+1. **Accuracy**: Measures the overall correctness of the model.
+   - Formula: `(TP + TN) / (TP + TN + FP + FN)`
+
+2. **Precision**: Indicates the proportion of positive predictions that are correct.
+   - Formula: `TP / (TP + FP)`
+
+3. **Recall (Sensitivity)**: Measures the ability of the model to identify all positive cases.
+   - Formula: `TP / (TP + FN)`
+
+4. **F1-Score**: Harmonic mean of precision and recall, balancing the two metrics.
+   - Formula: `2 * (Precision * Recall) / (Precision + Recall)`
+
+5. **ROC-AUC**: Evaluates the model's ability to distinguish between classes.
+   - AUC (Area Under the Curve) closer to 1 indicates better performance.
+
+6. **Specificity**: Measures the ability of the model to identify negative cases.
+   - Formula: `TN / (TN + FP)`
+"""
+
+"""
+## Understanding Classification Terminology
+
+In binary classification for diabetes prediction, we use several standard terms to evaluate model performance. Here's what each term means:
+
+### Basic Classification Terms
+
+1. **TP (True Positive)**: 
+   - **Definition**: Cases where the model correctly predicted a person HAS diabetes (Outcome=1) and they actually DO have diabetes.
+   - **Real-world meaning**: Correctly identified diabetic patients who can now receive appropriate treatment.
+   - **Example**: A patient with elevated glucose levels and family history of diabetes is correctly classified as diabetic.
+
+2. **TN (True Negative)**:
+   - **Definition**: Cases where the model correctly predicted a person does NOT have diabetes (Outcome=0) and they actually do NOT have diabetes.
+   - **Real-world meaning**: Correctly identified healthy individuals who don't need unnecessary diabetes treatment.
+   - **Example**: A young person with normal glucose levels and no risk factors is correctly classified as non-diabetic.
+
+3. **FP (False Positive)**:
+   - **Definition**: Cases where the model incorrectly predicted a person HAS diabetes (Outcome=1) but they actually do NOT have diabetes.
+   - **Real-world meaning**: Healthy individuals mistakenly identified as diabetic, leading to unnecessary worry and testing.
+   - **Example**: A person with temporarily elevated glucose due to recent meal is incorrectly classified as diabetic.
+
+4. **FN (False Negative)**:
+   - **Definition**: Cases where the model incorrectly predicted a person does NOT have diabetes (Outcome=0) but they actually DO have diabetes.
+   - **Real-world meaning**: Missed diagnoses of diabetes, potentially leading to untreated disease and complications.
+   - **Example**: A patient with early-stage diabetes who hasn't developed all symptoms yet is incorrectly classified as non-diabetic.
+
+### Confusion Matrix
+
+These four categories are typically organized in a **confusion matrix**:
+
+```
+                  │ Actual Condition
+                  │ Diabetes    │ No Diabetes
+─────────────────┼─────────────┼─────────────
+Predicted        │ True        │ False
+Diabetes         │ Positive    │ Positive
+                  │ (TP)        │ (FP)
+─────────────────┼─────────────┼─────────────
+Predicted        │ False       │ True
+No Diabetes      │ Negative    │ Negative
+                  │ (FN)        │ (TN)
+```
+
+### Performance Metrics Explained
+
+Using these basic terms, we can calculate various performance metrics:
+
+1. **Accuracy**: `(TP + TN) / (TP + TN + FP + FN)`
+   - The proportion of ALL correct predictions (both diabetes and non-diabetes) out of all predictions.
+   - **Example**: If our model correctly identifies 85 out of 100 patients, the accuracy is 85%.
+
+2. **Precision**: `TP / (TP + FP)`
+   - Among all people predicted to have diabetes, what proportion actually has diabetes.
+   - **Example**: If our model predicts 50 people have diabetes, but only 40 actually do, precision is 40/50 = 80%.
+
+3. **Recall (Sensitivity)**: `TP / (TP + FN)`
+   - Among all people who actually have diabetes, what proportion is correctly identified.
+   - **Example**: If 30 people in our sample actually have diabetes, but our model only identifies 24 of them, recall is 24/30 = 80%.
+
+4. **Specificity**: `TN / (TN + FP)`
+   - Among all people who do not have diabetes, what proportion is correctly identified as non-diabetic.
+   - **Example**: If 70 people in our sample don't have diabetes, and our model correctly identifies 63 of them as non-diabetic, specificity is 63/70 = 90%.
+
+5. **F1-Score**: `2 * (Precision * Recall) / (Precision + Recall)`
+   - Harmonic mean of precision and recall, providing a balance between the two metrics.
+   - Particularly useful when classes are imbalanced, as in many medical datasets.
+
+### Medical Context in Diabetes Prediction
+
+In diabetes screening:
+
+- **High Recall/Sensitivity** is often prioritized to minimize false negatives (missed cases), as untreated diabetes can lead to serious complications.
+  
+- **Good Specificity** is also important to avoid unnecessary medical testing and anxiety from false alarms.
+
+- **Precision** becomes more important when considering resource allocation for follow-up testing or intervention.
+
+- **The F1-Score** is useful as it balances the concerns of both missing actual cases and incorrectly flagging healthy individuals.
+
+When evaluating our diabetes prediction model, we carefully consider these trade-offs based on the intended use of the model—whether for initial screening, risk assessment, or as part of a multi-stage diagnostic process.
+"""
+
+"""
+## Implications of False Positives vs. False Negatives in Medical Context
+
+In diabetes prediction, understanding the implications of different types of errors is crucial:
+
+#### False Negatives (Type II Errors)
+- **Medical Impact**: A diabetic patient incorrectly classified as non-diabetic may not receive necessary treatment, leading to unmanaged diabetes and potential complications such as cardiovascular disease, kidney damage, and nerve damage.
+- **Cost**: The long-term healthcare costs of undiagnosed diabetes are substantial due to complications that could have been prevented with early intervention.
+- **Our Model**: Our model achieves a recall (sensitivity) of [insert value], meaning it correctly identifies [insert percentage]% of actual diabetic patients. The false negative rate of [insert percentage]% represents patients with diabetes who are missed by the model.
+"""
+
